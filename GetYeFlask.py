@@ -3,63 +3,7 @@
 import os
 import gettext
 
-starting_text = "THY DUNGEONMAN\n\nYOU ARE THY DUNGEONMAN!\n\nFor help type HELP, to view inventory type INVENTORY\n"
-dungeon_text = "Ye find yeself in yon dungeon. Ye see a SCROLL. Behind ye SCROLL is a FLASK.\nObvious exits are NORTH, SOUTH, and DENNIS.\n\n\n"
-dungeon_text_no_scroll = "Ye find yeself in yon dungeon. Ye see a FLASK.\nObvious exits are NORTH, SOUTH, and DENNIS.\n\n\n"
-what_to_do = "What wouldst thou deau?"
-end_game_text = "end game"
-help_text = "help"
-inventory_text = "inventory"
-rope_text = "rope"
-trinket_text = "trinket"
-dennis_text = "dennis"
-not_dennis_text = "not dennis"
-south_text = "south"
-north_text = "north"
-go_dungeon_text = "dungeon"
-get_scroll_text_1 = "get ye scroll"
-get_scroll_text_2 = "scroll"
-get_scroll_text_3 = "get scroll"
-get_flask_text_1 = "get ye flask"
-get_flask_text_2 = "get flask"
-get_flask_text_3 = "flask"
-give_dennis_text = "give trinket to dennis"
-trinket_text_1 = "trinket"
-trinket_text_2 = "get ye trinket"
-trinket_text_3 = "get trinket"
-dennis_text = "dennis"
-not_dennis_text = "not dennis"
-no_user_text = "Please actually writeth somethingith"
-bad_user_text = "That does not computether. Type HELP is thou needs of it"
-go_north_text = "\nYou go NORTH through yon corridor.\nYou arrive at parapets.\nYe see a ROPE.\nObvious exits are SOUTH and DUNGEON\n"
-go_south_text = "\nYou head south to an embankment, or maybe a chasm.\nYou can't decide which.\nAnyway, ye spies a TRINKET. Obvious exits are DUNGEON\n"
-south_text_trinket = "Obvious exits are DUNGEON"
-go_dennis_text = "Ye arrive at Dennis.\nHe wears a sporty frock coat and a long jimberjam.\nHe paces about nervously.\nObvious exits are NOT DENNIS.\n"
-get_ye_flask_full_text = "You cannot get the FLASK.\nIt is firmly bolted to a wall which is bolted to the rest of the dungeon which is probably bolted to a castle.\nNever you mind.\n"
-get_ye_scroll_full_text = "Ye takes the SCROLL and reads of it.\nIt doth say:\n\nBEWARE, READER OF YE SCROLL,\nDANGER AWAIT TO THE -\n\nThe SCROLL dissapears in they hands with ye olde ZAP!\n\n"
-scroll_gone = "Ye cannot take yon scroll as it dissapeard with ye olde ZAP!"
-get_ye_rope_full_text = "You attempt to take ye ROPE but alas it is enchanted!\nIt glows a mustard red and smells like a public privy.\nThe ROPE wraps round your neck and hangs you from the parapets.\nWith your last breath, you wonder what parapets are."
-get_ye_trinket_full_text = "Ye getsts yon TRINKET and discover it to be a bauble.\nYou rejoice at your good fortune.\nYou shove the TRINKET in your pouchel.\nIt kinda hurts.\n"
-give_dennis_trinket_text = "A novel idea! You givst the TRINKET to Dennis and he happily agrees to tell you what parapets are. \nWith this new knowledge, ye escapes from yon dungeon in order to search for the new dungeons and to remain..."
-already_got_trinket_text = "Ye hast already goteth yon trinket"
-no_trinket_to_give_text = "Ye doth not hath a TRINKET to given to DENNIS"
-dungeon_master_text = "THY DUNGEONMAN!!\n"
-item_removed_text = "Item removed from inventory"
-item_added_text = "Item added to inventory"
-final_score_text = "Your score is:"
-you_won_text = "You hath won! Congraturation!"
-game_over_text = "GAME OVER"
-inventory_empty_text = "Your inventory is currently empty!"
-inventory_singular_text = "Your inventory consists of the following item:"
-inventory_plural_text = "Your inventory consists of the following items:"
-what_to_do_text = "What wouldst thou deau?"
-no_not_dennis_text = "There is no NOT DENNIS here, please try again"
-no_trinket_text = "There is no TRINKET here, please try again.\n"
-no_rope_text = "There is no Rope here, please try again\n"
-acceptable_options_text = "This is a list of acceptable options for the entire game:"
-play_again_text = "Play again? [Y/N]"
-yes_option_text_1 = "y"
-yes_option_text_2 = "yes"
+_ = gettext.gettext
 
 
 f_condition_1 = False
@@ -69,25 +13,30 @@ n_condition_2 = False
 s_condition_1 = False
 d_condition_1 = False
 a_condition_1 = False
+
+#inventory will be used throughout the game
 inventory = []
-choice_list = ["north","south","dennis","scroll","flask","get ye trinket","give trinket to dennis","get ye scroll","scroll","not dennis","help","trinket","inventory","end game","rope","get ye flask","dungeon"]
+#The following list has all of the acceptable commands a user can input in the game. Every input is checked against this list and if it's not found the user is informed and reinputs the command
+choice_list = ["room","which room","display room","north","south","dennis","scroll","flask","get ye trinket","give trinket to dennis","get ye scroll","scroll","not dennis","help","trinket","inventory","end game","rope","get ye flask","dungeon"]
+#This is a global variable that tracks and displays where the customer is. It is used so you can only interact with objects in the same room as you
 current_room = ''
+#Score is calculated in several different instances throughout the game and displayed when the game comes to an end
 current_score = 0
     
 
-
+#This takes the user in put and compares it agains the list of acceptable words; if it's not in that list it will ask for a new input.
 def unacceptableChoice(choice_made):
-    if choice_made == end_game_text:
-        choice_made = end_game_text
+    if choice_made == _("end game"):
+        choice_made = _("end game")
         return choice_made
     if choice_made == '':
-        print(no_user_text)
+        print(_("Please actually writeth somethingith"))
         choice_made = input()
         choice_made = choice_made.casefold()
         unacceptableChoice(choice_made)
         return choice_made
     elif choice_made not in choice_list:
-        print(bad_user_text)
+        print(_("That does not computether. Type HELP is thou needs of it"))
         choice_made = input()
         choice_made = choice_made.casefold()
         unacceptableChoice(choice_made)
@@ -107,18 +56,21 @@ def go_north(choice_made):
     clear_Screen()
     global n_condition_1
     n_condition_1 = True
-    print(go_north_text)
+    print(_("You go NORTH through yon corridor."))
+    print(_("You arrive at parapets."))
+    print(_("Ye see a ROPE."))
+    print(_("Obvious exits are SOUTH and DUNGEON"))
     choice_made = ''
     return choice_made
 
 def go_dungeon(choice_made):
     clear_Screen()
     if a_condition_1 == True:
-        print(dungeon_text_no_scroll)
+        print(_("Ye find yeself in yon dungeon. Ye see a FLASK.\nObvious exits are NORTH, SOUTH, and DENNIS.\n\n\n"))
         choice_made = ''
         return choice_made
     else:
-        print(dungeon_text)
+        print(_("Ye find yeself in yon dungeon. Ye see a SCROLL. Behind ye SCROLL is a FLASK.\nObvious exits are NORTH, SOUTH, and DENNIS.\n\n\n"))
         choice_made = ''
         return choice_made
 
@@ -126,7 +78,9 @@ def go_south(choice_made):
     clear_Screen()
     global s_condition_1
     s_condition_1 = True
-    print(go_south_text)
+    print(_("You head south to an embankment, or maybe a chasm."))
+    print(_("You can't decide which."))
+    print(_("Anyway, ye spies a TRINKET. Obvious exits are DUNGEON"))
     choice_made = ''
     return choice_made
 
@@ -134,20 +88,28 @@ def dennis(choice_made):
     clear_Screen()
     global d_condition_1
     d_condition_1 = True
-    print(go_dennis_text)
+    print(_("Ye arrive at Dennis."))
+    print(_("He wears a sporty frock coat and a long jimberjam."))
+    print(_("He paces about nervously."))
+    print(_("Obvious exits are NOT DENNIS."))
     choice_made = ''
     return choice_made
 
 def not_dennis(choice_made):
     clear_Screen()
-    print(go_dennis_text)
+    print(_("Ye arrive at Dennis."))
+    print(_("He wears a sporty frock coat and a long jimberjam."))
+    print(_("He paces about nervously."))
+    print(_("Obvious exits are NOT DENNIS."))
     choice_made = ''
     return choice_made
 
 def get_ye_flask(choice_made):
     clear_Screen()
     global f_condition_1
-    print(get_ye_flask_full_text)
+    print(_("You cannot get the FLASK."))
+    print(_("It is firmly bolted to a wall which is bolted to the rest of the dungeon which is probably bolted to a castle."))
+    print(_("Never you mind."))
     f_condition_1 = True
     choice_made = ''
     return choice_made
@@ -156,21 +118,30 @@ def get_ye_scroll(choice_made):
     clear_Screen()
     global a_condition_1
     if a_condition_1 == False:
-        print(get_ye_scroll_full_text)
+        print(_("Ye takes the SCROLL and reads of it."))
+        print(_("It doth say:"))
+        print("\n\n")
+        print(_("BEWARE, READER OF YE SCROLL,"))
+        print(_("DANGER AWAIT TO THE -"))
+        print("\n\n")
+        print(_("The SCROLL dissapears in they hands with ye olde ZAP!"))
         compute_score()
         a_condition_1 = True
         choice_made = ''
         return choice_made
     else:
-        print(scroll_gone)
+        print(_("Ye cannot take yon scroll as it dissapeard with ye olde ZAP!"))
         choice_made = ''
         return choice_made
 
 def get_ye_rope(choice_made):
     clear_Screen()
-    print(get_ye_rope_full_text)
+    print(_("You attempt to take ye ROPE but alas it is enchanted!"))
+    print(_("It glows a mustard red and smells like a public privy."))
+    print(_("The ROPE wraps round your neck and hangs you from the parapets."))
+    print(_("With your last breath, you wonder what parapets are."))
     ye_have_lost(choice_made)    
-    choice_made = end_game_text
+    choice_made = _("end game")
     compute_score_neg()
     return choice_made
 
@@ -178,30 +149,34 @@ def get_ye_rope(choice_made):
 def get_ye_trinket(choice_made,i):
     if i in inventory:
         clear_Screen()
-        print(already_got_trinket_text)
-        print(south_text_trinket)
+        print(_("Ye hast already goteth yon trinket"))
+        print(_("Obvious exits are DUNGEON"))
         choice_made = user_input(choice_made)
         make_a_choice(choice_made)                    
     else:
-        inventory.append(trinket_text)
+        inventory.append(_("trinket"))
         clear_Screen()
-        print(item_added_text)
-        print(get_ye_trinket_full_text)
+        print(_("Item added to inventory"))
+        print(_("Ye getsts yon TRINKET and discover it to be a bauble."))
+        print(_("You rejoice at your good fortune."))
+        print(_("You shove the TRINKET in your pouchel."))
+        print(_("It kinda hurts."))
         compute_score()
-        print(south_text_trinket)
+        print(_("Obvious exits are DUNGEON"))
         choice_made = user_input(choice_made)
         make_a_choice(choice_made)
 
 def give_dennis_trinket(choice_made):
     clear_Screen()
     if len(inventory) > 0:
-        print(give_dennis_trinket_text)
-        print(dungeon_master_text)
-        inventory.remove(trinket_text)
-        print(item_removed_text)
+        print(_("A novel idea! You givst the TRINKET to Dennis and he happily agrees to tell you what parapets are."))
+        print(_("With this new knowledge, ye escapes from yon dungeon in order to search for the new dungeons and to remain..."))
+        print(_("THY DUNGEONMAN!!"))
+        inventory.remove(_("trinket"))
+        print(_("Item removed from inventory"))
         ye_have_won(choice_made)
     else:
-        print(no_trinket_to_give_text)
+        print(_("Ye doth not hath a TRINKET to given to DENNIS"))
         choice_made = user_input(choice_made)
         make_a_choice(choice_made)
         
@@ -216,44 +191,50 @@ def compute_score_neg():
     return current_score
 
 def display_score(choice_made):
-    print(final_score_text + str(current_score))
-    choice_made = end_game_text
+    print(_("Your score is:") + str(current_score))
+    choice_made = _("end game")
     return choice_made
 
 def ye_have_won(choice_made):
-    print(you_won_text)
+    print(_("You hath won! Congraturation!"))
     display_score(choice_made)
     return choice_made
 
 def ye_have_lost(choice_made):
-    print("\n\n" + game_over_text + "\n\n")
+    print("\n\n" + _("GAME OVER") + "\n\n")
     display_score(choice_made)
     return choice_made
     
 
 def inventory_show(choice_made):
     if len(inventory) < 1:
-        print("\n\n" + inventory_empty_text + "\n")
+        print("\n\n" + _("Your inventory is currently empty!") + "\n")
         choice_made = user_input(choice_made)
         make_a_choice(choice_made)
     elif len(inventory) == 1:
-        print("\n\n" + inventory_singular_text + "\n")
+        print("\n\n" + _("Your inventory consists of the following item:") + "\n")
         print('\n'.join(inventory)+"\n\n")
         choice_made = user_input(choice_made)
         make_a_choice(choice_made)
     elif len(inventory) > 1:
-        print("\n\n" + inventory_plural_text + "\n")
+        print("\n\n" + _("Your inventory consists of the following items:") + "\n")
         print('\n'.join(inventory)+"\n\n")
         choice_made = user_input(choice_made)
         make_a_choice(choice_made)
             
 
 def user_input(choice_made):
-    print("\n" + what_to_do_text)
+    print("\n" + _("What wouldst thou deau?"))
     choice_made = input()
     choice_made = choice_made.casefold()
     print("\n")
     return choice_made 
+
+def print_current_room(choice_made):
+    print("\n")
+    print("You are current in the " + current_room + " room.")
+    choice_made = user_input(choice_made)
+    return choice_made
 
 def clear_Screen():
     print("\n"*50)
@@ -264,16 +245,16 @@ def make_a_choice(choice_made):
         while choice_made == '':
             choice_made = user_input(choice_made)
             make_a_choice(choice_made)
-            if choice_made == end_game_text:
+            if choice_made == _("end game"):
                 display_score()
                 break
             
-    while choice_made != end_game_text:
+    while choice_made != _("end game"):
         if choice_made not in choice_list:
             choice_made = (unacceptableChoice(choice_made))
             break
             
-        elif choice_made == get_flask_text_1 or choice_made == get_flask_text_2 or choice_made == get_flask_text_3:
+        elif choice_made == _("get ye flask") or choice_made == _("get flask") or choice_made == _("flask"):
             
             if f_condition_2 == False:
                 get_ye_flask(choice_made)
@@ -289,40 +270,48 @@ def make_a_choice(choice_made):
                 make_a_choice(choice_made)
                 break
         
-        elif choice_made == get_scroll_text_1 or choice_made == get_scroll_text_2 or choice_made == get_scroll_text_3:
+        elif choice_made == _("get ye scroll") or choice_made == _("scroll") or choice_made == _("get scrolll"):
             get_ye_scroll(choice_made)
             print(dungeon_text_no_scroll)
             choice_made = user_input(choice_made)
             make_a_choice(choice_made)
             break
             
-        elif choice_made == north_text:
+        elif choice_made == _("north"):
+            #global current_room
+            #current_room = 'north'
             go_north(choice_made)
             choice_made = user_input(choice_made)
             make_a_choice(choice_made)
             break
         
-        elif choice_made == south_text:
+        elif choice_made == _("south"):
+            #global current_room
+            #current_room = 'south'
             go_south(choice_made)
             choice_made = user_input(choice_made)
             make_a_choice(choice_made)
             break
 
-        elif choice_made == go_dungeon_text:
+        elif choice_made == _("dungeon"):
+            #global current_room
+            #current_room = 'dungeon'
             go_dungeon(choice_made)
             choice_made = user_input(choice_made)
             make_a_choice(choice_made)
             break
         
-        elif choice_made == dennis_text:
+        elif choice_made == _("dennis"):
+            #global current_room
+            #current_room = 'dennis'
             dennis(choice_made)
             choice_made = user_input(choice_made)
             make_a_choice(choice_made)
             break
         
-        elif choice_made == not_dennis_text:
+        elif choice_made == _("not dennis"):
             if d_condition_1 == False:
-                print(no_not_dennis_text)
+                print(_("There is no NOT DENNIS here, please try again"))
                 choice_made = user_input(choice_made)
                 make_a_choice(choice_made)
             not_dennis(choice_made)
@@ -330,22 +319,22 @@ def make_a_choice(choice_made):
             make_a_choice(choice_made)
             break
 
-        elif choice_made == trinket_text_1 or choice_made == trinket_text_1 or choice_made == trinket_text_1:
+        elif choice_made == _("trinket") or choice_made == _("get ye trinket") or choice_made == _("get trinket"):
             i = trinket_text
             if s_condition_1 == True:
                 get_ye_trinket(choice_made,i)
                 break
             else:
-                print(no_trinket_text)
+                print(_("There is no TRINKET here, please try again."))
                 choice_made = user_input(choice_made)
                 make_a_choice(choice_made)
                 break
             
-        elif choice_made == rope_text:
+        elif choice_made == _("rope"):
             if n_condition_1 == False:
-                print(no_rope_text)
+                print(_("There is no Rope here, please try again"))
                 choice_made = user_input(choice_made)
-                choice_made = end_game_text
+                choice_made = _("end game")
                 make_a_choice(choice_made)
                 break
                 
@@ -353,23 +342,28 @@ def make_a_choice(choice_made):
                 get_ye_rope(choice_made)
                 break
             
-        elif choice_made == inventory_text:
+        elif choice_made == _("inventory"):
             inventory_show(choice_made)
             break
-
-        elif choice_made == give_dennis_text:
+        
+        elif choice_made == _("room") or choice_made == _("which room") or choice_made == _("display room"):
+            print_current_room(choice_made)
+            make_a_choice(choice_made)
+            break
+        
+        elif choice_made == _("give trinket to dennis"):
             give_dennis_trinket(choice_made)
             break
         
-        elif choice_made == help_text:
-            print(acceptable_options_text)
+        elif choice_made == _("help"):
+            print(_("This is a list of acceptable options for the entire game:"))
             print('\n'.join(choice_list))
             choice_made = user_input(choice_made)
             make_a_choice(choice_made)
             break
         
         
-        elif choice_made == end_game_text:
+        elif choice_made == _("end game"):
             display_score()
             break
 
@@ -388,26 +382,25 @@ def start_game():
     s_condition_1 = False
     d_condition_1 = False
     a_condition_1 = False
-    print(starting_text)
-    print(dungeon_text)
-    print(what_to_do)
-    d_condition = yes_option_text_1
-    while d_condition == yes_option_text_1:
+    print(_("THY DUNGEONMAN\n\nYOU ARE THY DUNGEONMAN!\n\nFor help type HELP, to view inventory type INVENTORY\n"))
+    print(_("Ye find yeself in yon dungeon. Ye see a SCROLL. Behind ye SCROLL is a FLASK.\nObvious exits are NORTH, SOUTH, and DENNIS.\n\n\n"))
+    print(_("What wouldst thou deau?"))
+    d_condition = _("y")
+    while d_condition == _("y"):
         inventory.clear()
         choice_made = input()
         choice_made = choice_made.casefold()
         make_a_choice(choice_made)
-        print(play_again_text)
+        print(_("Play again? [Y/N]"))
         d_condition = input()
         d_condition = d_condition.casefold()
-        if d_condition == yes_option_text_1 or d_condition == yes_option_text_2:
+        if d_condition == _("y") or d_condition == _("yes"):
             clear_Screen()
             start_game()
         else:
             break
 
 
-print("This is a test")
 clear_Screen()
 start_game()
 
